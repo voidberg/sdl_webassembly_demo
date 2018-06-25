@@ -10,8 +10,6 @@
 struct gameEngine {
   int SCREEN_WIDTH;
   int SCREEN_HEIGHT;
-  float FPS;
-  int DELAY_TIME;
 
   SDL_Window* window;
   SDL_Renderer* renderer;
@@ -28,7 +26,7 @@ struct gameEngine {
   struct fishNode* fish;
 };
 
-void engine_run(const char* title, int width, int height, float fps);
+void engine_run(const char* title, int width, int height);
 int engine_init(const char* title, struct gameEngine* engine);
 
 void engine_events(struct gameEngine* engine);

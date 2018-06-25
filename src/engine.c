@@ -31,13 +31,11 @@ void engine_loop() {
   engine_render(&engine);
 }
 
-void engine_run(const char* title, int width, int height, float fps) {
+void engine_run(const char* title, int width, int height) {
   SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "Game initializing.");
 
-  engine.FPS = fps;
   engine.SCREEN_WIDTH = width;
   engine.SCREEN_HEIGHT = height;
-  engine.DELAY_TIME = 1000.0f / engine.FPS;
 
   if (!engine_init(title, &engine)) {
     engine_quit(&engine);

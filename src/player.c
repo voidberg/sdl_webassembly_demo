@@ -39,7 +39,6 @@ struct playerEntity* player_init(struct gameEngine *engine) {
   player->state = Free;
 
   SDL_QueryTexture(player->shipTexture, NULL, NULL, &player->shipBox.w, &player->shipBox.h);
-//  SDL_QueryTexture(player->playerTexture, NULL, NULL, &player->box.w, &player->box.h);
 
   return player;
 }
@@ -93,11 +92,6 @@ void player_events(struct playerEntity *player, SDL_Event *event) {
 }
 
 void player_update(struct playerEntity *player) {
-//  if (player->vx != 0 || player->vy != 0) {
-//    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "VX: %f, VY: %f.", player->vx / player->engine->FPS, player->vy / player->engine->FPS);
-//  }
-  struct levelEntity* level = player->engine->level;
-
   player->box.x += player->vx * player->engine->timeStep;
   player->box.y += player->vy * player->engine->timeStep;
 

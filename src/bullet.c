@@ -2,6 +2,7 @@
 // Created by Alexandru Badiu on 20/06/2018.
 //
 #include "bullet.h"
+#include "fish.h"
 
 const int BULLET_VELOCITY = 150;
 
@@ -129,10 +130,23 @@ void bullet_render(struct bulletNode *bullet) {
 }
 
 void bullet_update(struct bulletNode *bullet) {
+  struct gameEngine* engine = bullet->engine;
+
   bullet->box.x += (bullet->direction == Left ? -BULLET_VELOCITY : BULLET_VELOCITY) * bullet->engine->timeStep;
 
+  struct fishNode* cursor = engine->fish;
+  while (cursor != NULL) {
+    if (collisionCheck(bullet->box, cursor->box)) {
+      engine->fish = fish_delete(engine->fish, cursor);
+      engine->bullets = bullet_delete(engine->bullets, bullet);
+      break;
+    }
+    cursor = cursor->next;
+  }
+
+
   if (bullet->box.x > bullet->engine->SCREEN_WIDTH) {
-    bullet->engine->bullets = bullet_delete(bullet->engine->bullets, bullet);
+    engine->bullets = bullet_delete(bullet->engine->bullets, bullet);
     return;
   }
 
