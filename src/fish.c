@@ -146,9 +146,9 @@ void fish_render(struct fishNode *fish) {
 
 void fish_update(struct fishNode *fish) {
   int vel = FISH_VELOCITY;
-  fish->box.x += (fish->direction == Left ? -vel : vel) / fish->engine->FPS;
+  fish->box.x += (fish->direction == Left ? -vel : vel) * fish->engine->timeStep;
 
-  // SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "VX: %f.", (fish->direction == Left ? -FISH_VELOCITY : FISH_VELOCITY) / fish->engine->FPS);
+  // SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "VX: %f.", (fish->direction == Left ? -FISH_VELOCITY : FISH_VELOCITY) * fish->engine->timeStep);
 
   if (fish->box.x < -fish->box.w) {
     fish->box.x = fish->engine->SCREEN_WIDTH;

@@ -98,8 +98,8 @@ void player_update(struct playerEntity *player) {
 //  }
   struct levelEntity* level = player->engine->level;
 
-  player->box.x += player->vx / player->engine->FPS;
-  player->box.y += player->vy / player->engine->FPS;
+  player->box.x += player->vx * player->engine->timeStep;
+  player->box.y += player->vy * player->engine->timeStep;
 
   if (player->box.x < 0) {
     player->box.x = 0;

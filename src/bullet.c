@@ -129,7 +129,7 @@ void bullet_render(struct bulletNode *bullet) {
 }
 
 void bullet_update(struct bulletNode *bullet) {
-  bullet->box.x += (bullet->direction == Left ? -BULLET_VELOCITY : BULLET_VELOCITY) / bullet->engine->FPS;
+  bullet->box.x += (bullet->direction == Left ? -BULLET_VELOCITY : BULLET_VELOCITY) * bullet->engine->timeStep;
 
   if (bullet->box.x > bullet->engine->SCREEN_WIDTH) {
     bullet->engine->bullets = bullet_delete(bullet->engine->bullets, bullet);

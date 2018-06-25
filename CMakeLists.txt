@@ -33,4 +33,4 @@ add_executable(glugglug
         src/engine.h
         src/level.c
         src/level.h
-        Makefile src/engine.h src/engine.c src/level.c src/level.h src/asset.h src/asset.c src/player.h src/player.c src/treasure.h src/treasure.c src/util.h src/util.c src/bullet.h src/bullet.c src/fish.h src/fish.c)
+        Makefile src/engine.h src/engine.c src/level.c src/level.h src/asset.h src/asset.c src/player.h src/player.c src/treasure.h src/treasure.c src/util.h src/util.c src/bullet.h src/bullet.c src/fish.h src/fish.c src/timer.h src/timer.c)

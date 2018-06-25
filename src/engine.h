@@ -18,6 +18,9 @@ struct gameEngine {
 
   int isRunning;
 
+  struct timer* timer;
+  float timeStep;
+
   struct levelEntity* level;
   struct playerEntity* player;
   struct treasureEntity* treasures[3];

@@ -15,23 +15,20 @@
 #include "treasure.h"
 #include "bullet.h"
 #include "fish.h"
+#include "timer.h"
 
 struct gameEngine engine;
 
 void engine_loop() {
-  unsigned int frameStart, frameTime;
-
-  frameStart = SDL_GetTicks();
-
   engine_events(&engine);
+
+  engine.timeStep = timer_get_ticks(engine.timer) / 1000.f;
+
   engine_update(&engine);
+
+  timer_start(engine.timer);
+
   engine_render(&engine);
-
-  frameTime = SDL_GetTicks() - frameStart;
-
-  if (frameTime < engine.DELAY_TIME) {
-    SDL_Delay((int) (engine.DELAY_TIME - frameTime));
-  }
 }
 
 void engine_run(const char* title, int width, int height, float fps) {
@@ -43,6 +40,13 @@ void engine_run(const char* title, int width, int height, float fps) {
   engine.DELAY_TIME = 1000.0f / engine.FPS;
 
   if (!engine_init(title, &engine)) {
+    engine_quit(&engine);
+
+    return;
+  }
+
+  engine.timer = timer_init();
+  if (engine.timer == NULL) {
     engine_quit(&engine);
 
     return;
@@ -205,6 +209,10 @@ void engine_quit(struct gameEngine *engine) {
   if (engine->window) {
     SDL_DestroyWindow(engine->window);
     engine->window = NULL;
+  }
+
+  if (engine->timer) {
+    free(engine->timer);
   }
 
   SDL_Quit();
