@@ -12,8 +12,10 @@
 struct fishNode {
   SDL_Rect box;
   SDL_Texture *texture;
+  SDL_Texture *deathTexture;
 
   enum Direction direction;
+  enum EnemyState state;
 
   struct gameEngine *engine;
 

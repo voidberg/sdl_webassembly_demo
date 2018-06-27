@@ -136,8 +136,12 @@ void bullet_update(struct bulletNode *bullet) {
 
   struct fishNode* cursor = engine->fish;
   while (cursor != NULL) {
+    if (cursor->state == Dying) {
+      continue;
+    }
+
     if (collisionCheck(bullet->box, cursor->box)) {
-      engine->fish = fish_delete(engine->fish, cursor);
+      cursor->state = Dying;
       engine->bullets = bullet_delete(engine->bullets, bullet);
       break;
     }

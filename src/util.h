@@ -9,8 +9,9 @@
 
 enum Direction { Left = 0, Right, Up, Down };
 enum TreasureType { Cup = 0, Chest, Jewelry };
-enum PlayerState { Free = 0, Carrying, Dying };
+enum PlayerState { Free = 0, Carrying };
 enum TreasureState { Sitting = 0, Carried, Deposited };
+enum EnemyState { Alive = 0, Dying, Dead };
 
 int collisionCheck(SDL_Rect a, SDL_Rect b);
 

@@ -10,6 +10,7 @@
 
 const int FISH_VELOCITY = 100;
 const int FISH_FRAMES = 4;
+const int DEATH_FRAMES = 6;
 
 struct fishNode* fish_add(struct fishNode* head, struct gameEngine* engine, int x, int y, enum Direction direction) {
   struct fishNode* node = malloc(sizeof(struct fishNode));
@@ -19,18 +20,23 @@ struct fishNode* fish_add(struct fishNode* head, struct gameEngine* engine, int 
   }
 
   node->texture = asset_load(engine, "assets/fish.png");
-
   if (node->texture == NULL) {
+    return NULL;
+  }
+
+  node->deathTexture = asset_load(engine, "assets/death.png");
+  if (node->deathTexture == NULL) {
     return NULL;
   }
 
   node->engine = engine;
   node->direction = direction;
+  node->state = Alive;
 
-  node->box.x = x;
-  node->box.y = y;
   node->box.w = 32;
   node->box.h = 32;
+  node->box.x = x;
+  node->box.y = y;
 
   node->next = head;
 
@@ -136,27 +142,49 @@ void fish_clear(struct fishNode* head) {
 }
 
 void fish_render(struct fishNode *fish) {
-  int sprite = (SDL_GetTicks() / 200) % FISH_FRAMES;
+  int sprite;
 
-  SDL_Rect dRect = { fish->box.x, fish->box.y, fish->box.w, fish->box.h };
-  SDL_Rect sRect = { sprite * fish->box.w, 0, fish->box.w, fish->box.h };
+  if (fish->state == Alive) {
+    sprite = (SDL_GetTicks() / 200) % FISH_FRAMES;
 
-  asset_render_ex(fish->engine, sRect, dRect, fish->texture, fish->direction == Left);
+    SDL_Rect dRect = { fish->box.x, fish->box.y, fish->box.w, fish->box.h };
+    SDL_Rect sRect = { sprite * fish->box.w, 0, fish->box.w, fish->box.h };
+
+    asset_render_ex(fish->engine, sRect, dRect, fish->texture, fish->direction == Left);
+  }
+
+  if (fish->state == Dying) {
+    sprite = (SDL_GetTicks() / 200) % DEATH_FRAMES;
+
+    SDL_Rect dRect = { fish->box.x, fish->box.y, 52, 53 };
+    SDL_Rect sRect = { sprite * 52, 0, 52, 53 };
+
+    asset_render_ex(fish->engine, sRect, dRect, fish->deathTexture, fish->direction == Left);
+
+    if (sprite == DEATH_FRAMES - 1) {
+      fish->state = Dead;
+    }
+  }
 }
 
 void fish_update(struct fishNode *fish) {
-  int vel = FISH_VELOCITY;
-  fish->box.x += (fish->direction == Left ? -vel : vel) * fish->engine->timeStep;
+  if (fish->state == Alive) {
+    fish->box.x += (fish->direction == Left ? -FISH_VELOCITY : FISH_VELOCITY) * fish->engine->timeStep;
 
-  // SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, "VX: %f.", (fish->direction == Left ? -FISH_VELOCITY : FISH_VELOCITY) * fish->engine->timeStep);
+    if (fish->box.x < -fish->box.w) {
+      fish->box.x = fish->engine->SCREEN_WIDTH;
+    }
 
-  if (fish->box.x < -fish->box.w) {
-    fish->box.x = fish->engine->SCREEN_WIDTH;
+    if (fish->box.x > fish->engine->SCREEN_WIDTH + fish->box.w) {
+      fish->box.x = 0;
+    }
   }
 
-  if (fish->box.x > fish->engine->SCREEN_WIDTH + fish->box.w) {
-    fish->box.x = 0;
-  }
+//  if (fish->state == Dead) {
+//    struct gameEngine* engine;
+//
+//    engine->fish = fish_delete(engine->fish, fish);
+//  }
 }
 
 void fish_destroy(struct fishNode *fish) {
