@@ -4,7 +4,7 @@ This is a small wip example of a game using SDL, working on the web via WebAssem
 
 It is inspired by the ZX Spectrum game GlugGlug.
 
-The various assets used are licensed using their original licenses listed in [graphics.txt](graphics.txt).
+The various assets used are licensed using their original licenses listed in [graphics.md](graphics.md).
 
 ## Building
 * `make` builds a Mac or Linux version.
